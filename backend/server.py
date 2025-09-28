@@ -1,3 +1,5 @@
+# """Flask backend for Rookie Play."""
+
 from flask import Flask, jsonify
 from flask_cors import CORS
 
@@ -6,6 +8,9 @@ CORS(app)
 
 @app.route('/')
 def hello_world():
+    """
+    Hello World test endpoint
+    """
     return jsonify(message="Hello, World!")
 
 if __name__ == '__main__':

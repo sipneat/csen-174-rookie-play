@@ -23,8 +23,10 @@ pipeline {
         script {
           sh """
             docker run --rm rookie-play-frontend:${BUILD_TAG} npx eslint -f checkstyle . > eslint-report.xml || true
+            docker run --rm rookie-play-backend:${BUILD_TAG} pylint --msg-template='{path}:{line}: [{msg_id}, {obj}] {msg} ({symbol})' . > pylint-report.txt || true
           """
           recordIssues tools: [esLint(pattern: 'eslint-report.xml')]
+          recordIssues tools: [pylint(pattern: 'pylint-report.txt')]
         }
       }
     }
@@ -42,6 +44,15 @@ pipeline {
   }
 
   post {
+    success {
+      echo "Deployed site: http://192.168.50.5:${FRONTEND_PORT}"
+      echo "Backend API: http://192.168.50.5:${BACKEND_PORT}"
+      script {
+        currentBuild.description = '<a href="http://192.168.50.5:${FRONTEND_PORT}" target="_blank">Open Deployed Site</a>'
+        currentBuild.description += '<br>'
+        currentBuild.description += '<a href="http://192.168.50.5:${BACKEND_PORT}" target="_blank">Open Backend API</a>'
+      }
+    }
     failure {
       script {
         sh """
