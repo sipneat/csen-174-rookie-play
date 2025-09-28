@@ -21,7 +21,7 @@ pipeline {
           docker run --rm rookie-play-backend:latest pylint --msg-template='{path}:{line}: [{msg_id}, {obj}] {msg} ({symbol})' . > pylint-report.txt || true
           """
           recordIssues tools: [esLint(pattern: 'eslint-report.xml')]
-          recordIssues tools: [pylint(pattern: 'pylint-report.txt')]
+          recordIssues tools: [pyLint(pattern: 'pylint-report.txt')]
         }
       }
     }
