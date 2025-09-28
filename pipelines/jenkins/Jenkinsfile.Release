@@ -1,0 +1,50 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Build Docker Images') {
+      steps {
+        script {
+          sh """
+            docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:latest ./frontend
+            docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:latest ./backend
+          """
+        }
+      }
+    }
+
+    stage('Static Analysis') {
+      steps {
+        script {
+          sh """
+            docker run --rm rookie-play-frontend:latest npx eslint -f checkstyle . > eslint-report.xml || true
+          """
+          recordIssues tools: [esLint(pattern: 'eslint-report.xml')]
+        }
+      }
+    }
+
+    stage ('Deploy with Docker Compose') {
+      steps {
+        sh """
+          FRONTEND_PORT=5173 \
+          BACKEND_PORT=3000 \
+          BUILD_TAG=latest \
+          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-release up -d
+        """
+      }
+    }
+  }
+
+  post {
+    failure {
+      script {
+        sh """
+          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-release down -v
+          docker rmi rookie-play-frontend:latest || true
+          docker rmi rookie-play-backend:latest || true
+        """
+      }
+    }
+  }
+}

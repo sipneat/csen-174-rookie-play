@@ -1,0 +1,55 @@
+pipeline {
+  agent any
+  environment {
+    BUILD_TAG = "pr-${env.CHANGE_ID}"
+    FRONTEND_PORT = "${5000 + env.CHANGE_ID.toInteger()}"
+    BACKEND_PORT = "${3000 + env.CHANGE_ID.toInteger()}"
+  }
+
+  stages {
+    stage('Build Docker Images') {
+      steps {
+        script {
+          sh """
+            docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:${BUILD_TAG} ./frontend
+            docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:${BUILD_TAG} ./backend
+          """
+        }
+      }
+    }
+
+    stage('Static Analysis') {
+      steps {
+        script {
+          sh """
+            docker run --rm rookie-play-frontend:${BUILD_TAG} npx eslint -f checkstyle . > eslint-report.xml || true
+          """
+          recordIssues tools: [esLint(pattern: 'eslint-report.xml')]
+        }
+      }
+    }
+
+    stage ('Deploy with Docker Compose') {
+      steps {
+        sh """
+          FRONTEND_PORT=${FRONTEND_PORT} \
+          BACKEND_PORT=${BACKEND_PORT} \
+          BUILD_TAG=${BUILD_TAG} \
+          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-${BUILD_TAG} up -d
+        """
+      }
+    }
+  }
+
+  post {
+    failure {
+      script {
+        sh """
+          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-${BUILD_TAG} down -v
+          docker rmi rookie-play-frontend:${BUILD_TAG} || true
+          docker rmi rookie-play-backend:${BUILD_TAG} || true
+        """
+      }
+    }
+  }
+}
