@@ -1,9 +1,9 @@
 pipeline {
   agent any
   environment {
-    BUILD_TAG = "pr-${env.CHANGE_ID}"
-    FRONTEND_PORT = "${5000 + env.CHANGE_ID.toInteger()}"
-    BACKEND_PORT = "${3000 + env.CHANGE_ID.toInteger()}"
+    BRANCH_NAME = "${env.BRANCH_NAME}"
+    INGRESS_HOST = "${env.BRANCH_NAME}.rookie-play.jakeesperson.com"
+    K8S_NAMESPACE = "rookie-play-${env.BRANCH_NAME}"
   }
 
   stages {
@@ -11,8 +11,8 @@ pipeline {
       steps {
         script {
           sh """
-            docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:${BUILD_TAG} ./frontend
-            docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:${BUILD_TAG} ./backend
+            docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:${BRANCH_NAME} ./frontend
+            docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:${BRANCH_NAME} ./backend
           """
         }
       }
@@ -22,8 +22,8 @@ pipeline {
       steps {
         script {
           sh """
-            docker run --rm rookie-play-frontend:${BUILD_TAG} npx eslint -f checkstyle . > eslint-report.xml || true
-            docker run --rm rookie-play-backend:${BUILD_TAG} pylint --msg-template='{path}:{line}: [{msg_id}, {obj}] {msg} ({symbol})' . > pylint-report.txt || true
+            docker run --rm rookie-play-frontend:${BRANCH_NAME} npx eslint -f checkstyle . > eslint-report.xml || true
+            docker run --rm rookie-play-backend:${BRANCH_NAME} pylint --msg-template='{path}:{line}: [{msg_id}, {obj}] {msg} ({symbol})' . > pylint-report.txt || true
           """
           recordIssues tools: [esLint(pattern: 'eslint-report.xml')]
           recordIssues tools: [pyLint(pattern: 'pylint-report.txt')]
@@ -31,34 +31,35 @@ pipeline {
       }
     }
 
-    stage ('Deploy with Docker Compose') {
+    stage ('Deploy to Kubernetes') {
       steps {
-        sh """
-          FRONTEND_PORT=${FRONTEND_PORT} \
-          BACKEND_PORT=${BACKEND_PORT} \
-          BUILD_TAG=${BUILD_TAG} \
-          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-${BUILD_TAG} up -d
-        """
+        script {
+          sh """
+            kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+            sed "s|\\\${INGRESS_HOST}|${INGRESS_HOST}|g" pipelines/k8s/ingress.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-deployment.yaml
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-service.yaml
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-deployment.yaml
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-service.yaml
+          """
+        }
       }
     }
   }
 
   post {
     success {
-      echo "Deployed site: http://192.168.50.5:${FRONTEND_PORT}"
-      echo "Backend API: http://192.168.50.5:${BACKEND_PORT}"
+      echo "Deployed site: http://${INGRESS_HOST}"
+      echo "Backend API: http://${INGRESS_HOST}/api"
       script {
-        currentBuild.description = '<a href="http://192.168.50.5:${FRONTEND_PORT}" target="_blank">Open Deployed Site</a>'
-        currentBuild.description += '<br>'
-        currentBuild.description += '<a href="http://192.168.50.5:${BACKEND_PORT}" target="_blank">Open Backend API</a>'
+        currentBuild.description = '<a href="http://${INGRESS_HOST}" target="_blank">Open Deployed Site</a>'
+        currentBuild.description += '<a href="http://${INGRESS_HOST}/api" target="_blank">Open Backend API</a>'
       }
     }
     failure {
       script {
         sh """
-          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-${BUILD_TAG} down -v
-          docker rmi rookie-play-frontend:${BUILD_TAG} || true
-          docker rmi rookie-play-backend:${BUILD_TAG} || true
+          kubectl delete namespace ${K8S_NAMESPACE} || true
         """
       }
     }

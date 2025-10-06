@@ -1,6 +1,11 @@
 pipeline {
   agent any
 
+  environment {
+    INGRESS_HOST = "rookie-play.jakeesperson.com"
+    K8S_NAMESPACE = "rookie-play-main"
+  }
+
   stages {
     stage('Build Docker Images') {
       steps {
@@ -26,34 +31,34 @@ pipeline {
       }
     }
 
-    stage ('Deploy with Docker Compose') {
+    stage ('Deploy to Kubernetes') {
       steps {
-        sh """
-          FRONTEND_PORT=5173 \
-          BACKEND_PORT=3000 \
-          BUILD_TAG=latest \
-          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-release up -d
-        """
+        script {
+          sh """
+            kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+            sed "s|\\\${INGRESS_HOST}|${INGRESS_HOST}|g" pipelines/k8s/ingress.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-deployment.yaml
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-service.yaml
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-deployment.yaml
+            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-service.yaml
+          """
+        }
       }
     }
-  }
 
   post {
     success {
-      echo "Deployed site: http://192.168.50.5:5173"
-      echo "Backend API: http://192.168.50.5:3000"
+      echo "Deployed site: http://${INGRESS_HOST}"
+      echo "Backend API: http://${INGRESS_HOST}/api"
       script {
-        currentBuild.description = '<a href="http://192.168.50.5:5173" target="_blank">Open Deployed Site</a>'
-        currentBuild.description += '<br>'
-        currentBuild.description += '<a href="http://192.168.50.5:3000" target="_blank">Open Backend API</a>'
+        currentBuild.description = '<a href="http://${INGRESS_HOST}" target="_blank">Open Deployed Site</a>'
+        currentBuild.description += '<a href="http://${INGRESS_HOST}/api" target="_blank">Open Backend API</a>'
       }
     }
     failure {
       script {
         sh """
-          docker compose -f pipelines/docker/docker-compose.yml -p rookie-play-release down -v
-          docker rmi rookie-play-frontend:latest || true
-          docker rmi rookie-play-backend:latest || true
+          kubectl delete namespace ${K8S_NAMESPACE} || true
         """
       }
     }
