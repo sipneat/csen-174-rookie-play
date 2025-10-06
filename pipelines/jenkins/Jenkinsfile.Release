@@ -15,8 +15,8 @@ pipeline {
             docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:${BRANCH_NAME} ./frontend
             docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:${BRANCH_NAME} ./backend
 
-            docker save rookie-play-frontend:${BRANCH_NAME} | sudo k3s ctr images import -
-            docker save rookie-play-backend:${BRANCH_NAME} | sudo k3s ctr images import -
+            docker save rookie-play-frontend:${BRANCH_NAME} | k3s ctr images import -
+            docker save rookie-play-backend:${BRANCH_NAME} | k3s ctr images import -
           """
         }
       }
