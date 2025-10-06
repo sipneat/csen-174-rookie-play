@@ -37,9 +37,11 @@ pipeline {
           sh """
             kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
             sed "s|\\\${INGRESS_HOST}|${INGRESS_HOST}|g" pipelines/k8s/ingress.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
-            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-deployment.yaml
+
+            sed "s|\\\${BRANCH_NAME}|${BRANCH_NAME}|g" pipelines/k8s/frontend-deployment.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
             kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-service.yaml
-            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-deployment.yaml
+
+            sed "s|\\\${BRANCH_NAME}|${BRANCH_NAME}|g" pipelines/k8s/backend-deployment.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
             kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-service.yaml
           """
         }

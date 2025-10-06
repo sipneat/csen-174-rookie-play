@@ -2,6 +2,7 @@ pipeline {
   agent any
 
   environment {
+   BRANCH_NAME = "latest"
     INGRESS_HOST = "rookie-play.jakeesperson.com"
     K8S_NAMESPACE = "rookie-play-main"
   }
@@ -11,8 +12,8 @@ pipeline {
       steps {
         script {
           sh """
-            docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:latest ./frontend
-            docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:latest ./backend
+            docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:${BRANCH_NAME} ./frontend
+            docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:${BRANCH_NAME} ./backend
           """
         }
       }
@@ -22,8 +23,8 @@ pipeline {
       steps {
         script {
           sh """
-            docker run --rm rookie-play-frontend:latest npx eslint -f checkstyle . > eslint-report.xml || true
-          docker run --rm rookie-play-backend:latest pylint --msg-template='{path}:{line}: [{msg_id}, {obj}] {msg} ({symbol})' . > pylint-report.txt || true
+            docker run --rm rookie-play-frontend:${BRANCH_NAME} npx eslint -f checkstyle . > eslint-report.xml || true
+            docker run --rm rookie-play-backend:${BRANCH_NAME} pylint --msg-template='{path}:{line}: [{msg_id}, {obj}] {msg} ({symbol})' . > pylint-report.txt || true
           """
           recordIssues tools: [esLint(pattern: 'eslint-report.xml')]
           recordIssues tools: [pyLint(pattern: 'pylint-report.txt')]
@@ -37,9 +38,11 @@ pipeline {
           sh """
             kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
             sed "s|\\\${INGRESS_HOST}|${INGRESS_HOST}|g" pipelines/k8s/ingress.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
-            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-deployment.yaml
+
+            sed "s|\\\${BRANCH_NAME}|${BRANCH_NAME}|g" pipelines/k8s/frontend-deployment.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
             kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/frontend-service.yaml
-            kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-deployment.yaml
+
+            sed "s|\\\${BRANCH_NAME}|${BRANCH_NAME}|g" pipelines/k8s/backend-deployment.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
             kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-service.yaml
           """
         }
