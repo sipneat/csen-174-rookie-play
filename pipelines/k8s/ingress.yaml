@@ -3,15 +3,11 @@ kind: Ingress
 metadata:
   name: rookie-play-ingress
   annotations:
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   tls:
   - hosts:
     - "${INGRESS_HOST}"
-    secretName: rookie-play-tls
   rules:
   - host: "${INGRESS_HOST}"
     http:
