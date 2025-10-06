@@ -1,5 +1,6 @@
 pipeline {
   agent any
+
   environment {
     BRANCH_NAME = "${env.BRANCH_NAME}"
     INGRESS_HOST = "${env.BRANCH_NAME}.rookie-play.jakeesperson.com"
@@ -46,6 +47,9 @@ pipeline {
 
             sed "s|\\\${BRANCH_NAME}|${BRANCH_NAME}|g" pipelines/k8s/backend-deployment.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
             kubectl apply -n ${K8S_NAMESPACE} -f pipelines/k8s/backend-service.yaml
+
+            kubectl rollout restart deployment/frontend -n ${K8S_NAMESPACE}
+            kubectl rollout restart deployment/backend -n ${K8S_NAMESPACE}
           """
         }
       }
