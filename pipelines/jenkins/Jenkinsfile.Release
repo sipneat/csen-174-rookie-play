@@ -58,8 +58,9 @@ pipeline {
       echo "Deployed site: http://${INGRESS_HOST}"
       echo "Backend API: http://${INGRESS_HOST}/api"
       script {
-        currentBuild.description = '<a href="http://${INGRESS_HOST}" target="_blank">Open Deployed Site</a>'
-        currentBuild.description += '<a href="http://${INGRESS_HOST}/api" target="_blank">Open Backend API</a>'
+        currentBuild.description = "<a href=\"http://${INGRESS_HOST}\" target=\"_blank\">Open Deployed Site</a>"
+        currentBuild.description += '<br>'
+        currentBuild.description += "<a href=\"http://${INGRESS_HOST}/api\" target=\"_blank\">Open Backend API</a>"
       }
     }
     failure {
