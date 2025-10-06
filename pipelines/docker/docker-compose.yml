@@ -1,10 +1,10 @@
 services:
   frontend:
-    image: rookie-play-frontend:${BUILD_TAG}
+    image: rookie-play-frontend:latest
     ports:
-      - "${FRONTEND_PORT}:5173"
+      - "5173:5173"
 
   backend:
-    image: rookie-play-backend:${BUILD_TAG}
+    image: rookie-play-backend:latest
     ports:
-      - "${BACKEND_PORT}:3000"
+      - "3000:3000"
