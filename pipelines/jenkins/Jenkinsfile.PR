@@ -39,6 +39,7 @@ pipeline {
         script {
           sh """
             kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+            kubectl create secret tls rookie-play-tls --cert=/var/jenkins/fullchain.pem --key=/var/jenkins/privkey.pem -n ${K8S_NAMESPACE} || true
             sed "s|\\\${INGRESS_HOST}|${INGRESS_HOST}|g" pipelines/k8s/ingress.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
 
             sed "s|\\\${BRANCH_NAME}|${BRANCH_NAME}|g" pipelines/k8s/frontend-deployment.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
