@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: frontend:${BRANCH_NAME}
+        image: rookie-play-frontend:${BRANCH_NAME}
         imagePullPolicy: Never
         ports:
         - containerPort: 5173

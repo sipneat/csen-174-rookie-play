@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment {
-   BRANCH_NAME = "latest"
+    BRANCH_NAME = "latest"
     INGRESS_HOST = "rookie-play.jakeesperson.com"
     K8S_NAMESPACE = "rookie-play-main"
   }
