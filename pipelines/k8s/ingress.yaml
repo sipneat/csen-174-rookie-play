@@ -5,9 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  tls:
-  - hosts:
-    - "${INGRESS_HOST}"
+  ingressClassName: traefik
   rules:
   - host: "${INGRESS_HOST}"
     http:
