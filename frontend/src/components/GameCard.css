@@ -1,0 +1,157 @@
+.game-card {
+  background: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.game-card.favorite {
+  border-color: #f59e0b;
+  background: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%);
+}
+
+.game-card.favorite:hover {
+  border-color: #d97706;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.game-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.game-status {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.quarter {
+  font-weight: 600;
+  color: #374151;
+}
+
+.time {
+  color: #6b7280;
+}
+
+.favorite-indicator {
+  color: #f59e0b;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.teams {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.team-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 4px;
+}
+
+.team-score {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.vs {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0 16px;
+}
+
+.game-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.possession {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.label {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+.down-distance {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.down {
+  background: #3b82f6;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.distance {
+  color: #374151;
+  font-weight: 500;
+}
+
+.field-position {
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .game-card {
+    padding: 12px;
+    margin: 8px 0;
+  }
+  
+  .teams {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .vs {
+    margin: 0;
+  }
+  
+  .game-details {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
+  }
+}
