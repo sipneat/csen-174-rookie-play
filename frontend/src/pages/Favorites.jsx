@@ -57,7 +57,6 @@ export default function Favorites() {
       
       setUser(currentUser)
       
-      // Load user's favorite teams from Firestore
       try {
         const userDocRef = doc(db, 'users', currentUser.uid)
         const userDoc = await getDoc(userDocRef)

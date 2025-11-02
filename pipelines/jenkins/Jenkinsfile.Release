@@ -5,6 +5,7 @@ pipeline {
     BRANCH_NAME = "latest"
     INGRESS_HOST = "rookie-play.jakeesperson.com"
     K8S_NAMESPACE = "rookie-play-main"
+    API_BASE_URL = "http://rookie-play.jakeesperson.com/api"
   }
 
   stages {
@@ -12,7 +13,10 @@ pipeline {
       steps {
         script {
           sh """
-            docker build -f pipelines/docker/Dockerfile.frontend -t rookie-play-frontend:${BRANCH_NAME} ./frontend
+            docker build -f pipelines/docker/Dockerfile.frontend \
+              --build-arg VITE_API_BASE_URL=${API_BASE_URL} \
+              --build-arg VITE_USE_MOCK_DATA=false \
+              -t rookie-play-frontend:${BRANCH_NAME} ./frontend
             docker build -f pipelines/docker/Dockerfile.backend -t rookie-play-backend:${BRANCH_NAME} ./backend
 
             docker save rookie-play-frontend:${BRANCH_NAME} | k3s ctr images import -

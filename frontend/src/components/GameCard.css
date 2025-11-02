@@ -101,7 +101,6 @@
   font-style: italic;
 }
 
-/* Responsive design */
 @media (max-width: 640px) {
   .game-card {
     padding: 12px;

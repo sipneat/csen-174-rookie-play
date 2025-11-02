@@ -5,13 +5,11 @@ export default function GameCard({ game, isFavorite, onGameClick }) {
     onGameClick(game)
   }
 
-  // Extract data from backend format
   const homeTeam = game.home_team || {}
   const awayTeam = game.away_team || {}
   const status = game.status || 'scheduled'
   const startTime = game.start_time || ''
 
-  // Format status display
   const getStatusDisplay = () => {
     if (status === 'STATUS_IN_PROGRESS') return 'Live'
     if (status === 'STATUS_SCHEDULED') return 'Upcoming'
@@ -20,7 +18,6 @@ export default function GameCard({ game, isFavorite, onGameClick }) {
     return status
   }
 
-  // Format time display
   const getTimeDisplay = () => {
     if (!startTime) return ''
     try {

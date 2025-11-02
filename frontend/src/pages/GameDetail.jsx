@@ -43,15 +43,12 @@ export default function GameDetail() {
       setPlaysLoading(true)
     }
     try {
-      // Fetch plays
       const playsUrl = buildApiUrl(API_ENDPOINTS.GAME_PLAYS(gameId))
       const playsData = await doFetchJson(playsUrl)
       const allPlays = playsData.plays || []
       
-      // Get last 5 plays
       const recentPlays = allPlays.slice(-5).reverse()
       
-      // Fetch explanations for each play
       const playsWithExplanations = await Promise.all(
         recentPlays.map(async (play) => {
           try {
@@ -71,7 +68,6 @@ export default function GameDetail() {
         })
       )
       
-      // Only update if plays have actually changed
       const newPlayIds = playsWithExplanations.map(p => p.id || p.sequenceNumber).join(',')
       const oldPlayIds = previousPlaysRef.current?.map(p => p.id || p.sequenceNumber).join(',')
       
@@ -99,12 +95,11 @@ export default function GameDetail() {
 
   useEffect(() => {
     if (game) {
-      fetchPlays(false) // Initial load with loading state
-      // Refresh plays every 30 seconds if game is in progress
+      fetchPlays(false)
       const status = game.gamepackageJSON?.header?.competitions?.[0]?.status
       const statusType = status?.type?.name
       if (statusType === 'STATUS_IN_PROGRESS') {
-        const playsInterval = setInterval(() => fetchPlays(true), 30000) // Silent updates
+        const playsInterval = setInterval(() => fetchPlays(true), 30000)
         return () => clearInterval(playsInterval)
       }
     }
@@ -147,7 +142,6 @@ export default function GameDetail() {
     )
   }
 
-  // Parse ESPN CDN game data structure
   const gameInfo = game.gamepackageJSON?.header || {}
   const competitions = gameInfo.competitions || []
   const competition = competitions[0] || {}
@@ -164,12 +158,10 @@ export default function GameDetail() {
   const displayClock = status.displayClock || ''
   const statusType = status.type?.name || ''
   
-  // Get possession
   const possession = competition.situation?.possession || null
   const possessionTeam = competitors.find(c => c.id === possession)
   const ballPossessionText = possessionTeam ? possessionTeam.team?.displayName : ''
   
-  // Get down and distance
   const situation = competition.situation || {}
   const down = situation.shortDownDistanceText || ''
   const possession_text = situation.possessionText || ''

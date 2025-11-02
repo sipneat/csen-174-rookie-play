@@ -4,6 +4,15 @@ COPY package*.json ./
 RUN npm ci
 RUN npm install -g serve
 COPY . .
+
+# Accept build arguments for environment variables
+ARG VITE_API_BASE_URL
+ARG VITE_USE_MOCK_DATA=false
+
+# Set environment variables for the build
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+ENV VITE_USE_MOCK_DATA=$VITE_USE_MOCK_DATA
+
 RUN npm run build
 EXPOSE 5173
 CMD ["serve", "-s", "dist", "-l", "5173"]
