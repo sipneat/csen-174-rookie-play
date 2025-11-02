@@ -3,7 +3,7 @@ import Main from "./pages/Main";
 import About from "./pages/About";
 
 export default function App() {
-  let chat = "hello";
+  let chat = "hello9";
 
   return (
     <div className="min-h-screen">
