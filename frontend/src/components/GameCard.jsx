@@ -1,22 +1,40 @@
 import './GameCard.css'
 
 export default function GameCard({ game, isFavorite, onGameClick }) {
-  const { 
-    id, 
-    homeTeam, 
-    awayTeam, 
-    homeScore, 
-    awayScore, 
-    quarter, 
-    timeRemaining, 
-    ballPossession, 
-    down, 
-    distance, 
-    fieldPosition 
-  } = game
-
   const handleClick = () => {
     onGameClick(game)
+  }
+
+  // Extract data from backend format
+  const homeTeam = game.home_team || {}
+  const awayTeam = game.away_team || {}
+  const status = game.status || 'scheduled'
+  const startTime = game.start_time || ''
+
+  // Format status display
+  const getStatusDisplay = () => {
+    if (status === 'STATUS_IN_PROGRESS') return 'Live'
+    if (status === 'STATUS_SCHEDULED') return 'Upcoming'
+    if (status === 'STATUS_FINAL') return 'Final'
+    if (status === 'STATUS_HALFTIME') return 'Halftime'
+    return status
+  }
+
+  // Format time display
+  const getTimeDisplay = () => {
+    if (!startTime) return ''
+    try {
+      const date = new Date(startTime)
+      return date.toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      })
+    } catch {
+      return startTime
+    }
   }
 
   return (
@@ -26,37 +44,29 @@ export default function GameCard({ game, isFavorite, onGameClick }) {
     >
       <div className="game-header">
         <div className="game-status">
-          <span className="quarter">{quarter}</span>
-          <span className="time">{timeRemaining}</span>
+          <span className="quarter">{getStatusDisplay()}</span>
+          <span className="time">{getTimeDisplay()}</span>
         </div>
         {isFavorite && <div className="favorite-indicator">★</div>}
       </div>
       
       <div className="teams">
         <div className="team away-team">
-          <div className="team-name">{awayTeam.name}</div>
-          <div className="team-score">{awayScore}</div>
+          <div className="team-name">{awayTeam.name || 'Away Team'}</div>
+          <div className="team-abbr">{awayTeam.abbr || ''}</div>
         </div>
         
         <div className="vs">@</div>
         
         <div className="team home-team">
-          <div className="team-name">{homeTeam.name}</div>
-          <div className="team-score">{homeScore}</div>
+          <div className="team-name">{homeTeam.name || 'Home Team'}</div>
+          <div className="team-abbr">{homeTeam.abbr || ''}</div>
         </div>
       </div>
       
       <div className="game-details">
-        <div className="possession">
-          <span className="label">Ball:</span>
-          <span className="team-name">{ballPossession}</span>
-        </div>
-        <div className="down-distance">
-          <span className="down">{down}</span>
-          <span className="distance">{distance}</span>
-        </div>
-        <div className="field-position">
-          <span className="position">{fieldPosition}</span>
+        <div className="detail-text">
+          Click to view live game details
         </div>
       </div>
     </div>

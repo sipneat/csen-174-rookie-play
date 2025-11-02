@@ -73,12 +73,13 @@
   font-weight: 600;
   color: #374151;
   margin-bottom: 4px;
+  text-align: center;
 }
 
-.team-score {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1f2937;
+.team-abbr {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
 }
 
 .vs {
@@ -88,49 +89,16 @@
 }
 
 .game-details {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 12px;
   background: #f9fafb;
   border-radius: 8px;
+  text-align: center;
+}
+
+.detail-text {
+  color: #6b7280;
   font-size: 14px;
-}
-
-.possession {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.label {
-  color: #6b7280;
-  font-weight: 500;
-}
-
-.down-distance {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.down {
-  background: #3b82f6;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-weight: 600;
-  font-size: 12px;
-}
-
-.distance {
-  color: #374151;
-  font-weight: 500;
-}
-
-.field-position {
-  color: #6b7280;
-  font-weight: 500;
+  font-style: italic;
 }
 
 /* Responsive design */
@@ -147,11 +115,5 @@
   
   .vs {
     margin: 0;
-  }
-  
-  .game-details {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
   }
 }

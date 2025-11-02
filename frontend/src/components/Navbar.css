@@ -1,0 +1,72 @@
+.rp-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rp-navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.rp-brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: inherit;
+  margin-right: 0.5rem;
+}
+
+.rp-navlinks a {
+  margin-right: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.9;
+}
+
+.rp-navlinks a.active {
+  font-weight: 600;
+  border-bottom: 2px solid rgba(100,111,255,0.8);
+  padding-bottom: 0.15rem;
+}
+
+.rp-navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rp-user {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rp-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  object-fit: cover;
+}
+
+.rp-username {
+  font-size: 0.95rem;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rp-signout {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 0.35rem 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
