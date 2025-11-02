@@ -1,0 +1,45 @@
+Command:
+
+python -m unittest -v test.py
+
+Output ("Errors" are stderr logs for API edge cases, expected behavior as it returns the correct error HTTP code):
+
+test_invalid_favorites_post (test.TestApiEdgeCases.test_invalid_favorites_post) ... ok
+test_invalid_game_id (test.TestApiEdgeCases.test_invalid_game_id) ... Error fetching %s: %s https://cdn.espn.com/core/nfl/game Expecting value: line 2 column 9 (char 9)
+Error fetching game invalid: Expecting value: line 2 column 9 (char 9)
+ok
+test_invalid_player_id (test.TestApiEdgeCases.test_invalid_player_id) ... Error fetching %s: %s https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/invalid/overview 400 Client Error: Bad Request for url: https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/invalid/overview
+Error fetching %s: %s https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/invalid 400 Client Error: Bad Request for url: https://site.web.api.espn.com/apis/common/v3/sports/football/nfl/athletes/invalid
+Error fetching %s: %s https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/invalid 400 Client Error: Bad Request for url: https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/invalid
+Failed to fetch player %s: %s invalid 400 Client Error: Bad Request for url: https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/athletes/invalid
+ok
+test_large_game_id (test.TestApiEdgeCases.test_large_game_id) ... Error fetching %s: %s https://cdn.espn.com/core/nfl/game Expecting value: line 2 column 9 (char 9)
+Error fetching game 999999999999: Expecting value: line 2 column 9 (char 9)
+ok
+test_missing_note (test.TestApiEdgeCases.test_missing_note) ... ok
+test_get_game_normal (test.TestGameService.test_get_game_normal) ... ok
+test_list_games_empty (test.TestGameService.test_list_games_empty) ... ok
+test_list_games_invalid_type (test.TestGameService.test_list_games_invalid_type) ... Error listing games: Invalid event type
+ok
+test_list_games_missing_fields (test.TestGameService.test_list_games_missing_fields) ... ok
+test_list_games_normal (test.TestGameService.test_list_games_normal) ... ok
+test_explain_play_obj_fourth_down (test.TestPlayService.test_explain_play_obj_fourth_down) ... ok
+test_explain_play_obj_missing_fields (test.TestPlayService.test_explain_play_obj_missing_fields) ... ok
+test_explain_play_obj_normal (test.TestPlayService.test_explain_play_obj_normal) ... ok
+test_game_plays_fallback (test.TestPlayService.test_game_plays_fallback) ... ok
+test_game_plays_normal (test.TestPlayService.test_game_plays_normal) ... ok
+test_get_player_invalid (test.TestPlayerService.test_get_player_invalid) ... ok
+test_get_player_large_id (test.TestPlayerService.test_get_player_large_id) ... ok
+test_get_player_normal (test.TestPlayerService.test_get_player_normal) ... ok
+test_get_player_not_found (test.TestPlayerService.test_get_player_not_found) ... ok
+test_get_player_wrong_type (test.TestPlayerService.test_get_player_wrong_type) ... ok
+test_get_team_normal (test.TestTeamService.test_get_team_normal) ... ok
+test_get_team_not_found (test.TestTeamService.test_get_team_not_found) ... ok
+test_list_teams_empty (test.TestTeamService.test_list_teams_empty) ... ok
+test_list_teams_invalid (test.TestTeamService.test_list_teams_invalid) ... ok
+test_list_teams_normal (test.TestTeamService.test_list_teams_normal) ... ok
+
+----------------------------------------------------------------------
+Ran 25 tests in 1.015s
+
+OK
