@@ -5,7 +5,7 @@ pipeline {
     BRANCH_NAME = "${env.BRANCH_NAME}"
     INGRESS_HOST = "${env.BRANCH_NAME}.rookie-play.jakeesperson.com"
     K8S_NAMESPACE = "rookie-play-${env.BRANCH_NAME}"
-    API_BASE_URL = "http://${env.BRANCH_NAME}.rookie-play.jakeesperson.com/api"
+    API_BASE_URL = "https://${env.BRANCH_NAME}.rookie-play.jakeesperson.com"
   }
 
   stages {

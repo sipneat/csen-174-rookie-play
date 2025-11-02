@@ -5,7 +5,7 @@ pipeline {
     BRANCH_NAME = "latest"
     INGRESS_HOST = "rookie-play.jakeesperson.com"
     K8S_NAMESPACE = "rookie-play-main"
-    API_BASE_URL = "http://rookie-play.jakeesperson.com/api"
+    API_BASE_URL = "https://rookie-play.jakeesperson.com"
   }
 
   stages {
