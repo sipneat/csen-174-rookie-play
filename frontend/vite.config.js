@@ -4,4 +4,10 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  server: {
+    allowedHosts: [
+      'rookie-play.jakeesperson.com',
+      /^.+\.rookie-play\.jakeesperson\.com$/
+    ],
+  }
 })

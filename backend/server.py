@@ -6,10 +6,10 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/')
+@app.route('/api')
 def hello_world():
     """
-    Hello World test endpoint
+    Hello World test endpoints 
     """
     return jsonify(message="Hello, World!")
 
