@@ -78,12 +78,6 @@ export default function Main() {
 
   useEffect(() => {
     fetchGames()
-    intervalRef.current = setInterval(() => {
-      fetchGames()
-    }, 30000)
-    return () => {
-      if (intervalRef.current) clearInterval(intervalRef.current)
-    }
   }, [fetchGames])
 
   const sortedGames = [...games].sort((a, b) => {
@@ -112,8 +106,8 @@ export default function Main() {
   return (
     <div className="main-container">
       <header className="main-header">
-        <h1>RookiePlay</h1>
-        <p>Select a game to follow and learn about American football in real-time</p>
+        <h1>Rookie Play</h1>
+        <p>Select a game to follow and learn about NFL football in real-time</p>
       </header>
       
       {error && (

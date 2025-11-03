@@ -2,12 +2,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.6rem 1rem;
-  background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
-  border-bottom: 1px solid rgba(255,255,255,0.03);
-  gap: 1rem;
-  width: 100%;
-  box-sizing: border-box;
+  padding: 1rem;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ccc;
 }
 
 .rp-navbar-left {
@@ -17,23 +14,20 @@
 }
 
 .rp-brand {
-  font-weight: 700;
+  font-weight: bold;
   text-decoration: none;
-  color: inherit;
-  margin-right: 0.5rem;
+  color: #333;
 }
 
 .rp-navlinks a {
-  margin-right: 0.75rem;
+  margin-right: 1rem;
   text-decoration: none;
-  color: inherit;
-  opacity: 0.9;
+  color: #333;
 }
 
 .rp-navlinks a.active {
-  font-weight: 600;
-  border-bottom: 2px solid rgba(100,111,255,0.8);
-  padding-bottom: 0.15rem;
+  font-weight: bold;
+  text-decoration: underline;
 }
 
 .rp-navbar-right {
@@ -51,22 +45,21 @@
 .rp-avatar {
   width: 32px;
   height: 32px;
-  border-radius: 999px;
-  object-fit: cover;
+  border-radius: 50%;
 }
 
 .rp-username {
-  font-size: 0.95rem;
-  max-width: 160px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  font-size: 0.9rem;
 }
 
 .rp-signout {
-  background: transparent;
-  border: 1px solid rgba(255,255,255,0.06);
-  padding: 0.35rem 0.6rem;
-  border-radius: 8px;
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
   cursor: pointer;
+}
+
+.rp-signout:hover {
+  background: #f0f0f0;
 }

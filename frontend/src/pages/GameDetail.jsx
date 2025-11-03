@@ -89,19 +89,11 @@ export default function GameDetail() {
 
   useEffect(() => {
     fetchGameDetails()
-    const interval = setInterval(fetchGameDetails, 30000)
-    return () => clearInterval(interval)
   }, [fetchGameDetails])
 
   useEffect(() => {
     if (game) {
       fetchPlays(false)
-      const status = game.gamepackageJSON?.header?.competitions?.[0]?.status
-      const statusType = status?.type?.name
-      if (statusType === 'STATUS_IN_PROGRESS') {
-        const playsInterval = setInterval(() => fetchPlays(true), 30000)
-        return () => clearInterval(playsInterval)
-      }
     }
   }, [game, fetchPlays])
 
@@ -251,71 +243,34 @@ export default function GameDetail() {
                 
                 return (
                   <div key={stableKey} className="play-item">
-                    <div className="play-header">
-                      <span className="play-number">Recent Play #{plays.length - index}</span>
+                    <div className="play-data">
+                      <div><strong>Play #{plays.length - index}</strong></div>
                       {play.clock?.displayValue && (
-                        <span className="play-clock">{play.clock.displayValue}</span>
+                        <div>Time: {play.clock.displayValue}</div>
                       )}
-                    </div>
-                    
-                    <div className="play-main-content">
-                      <div className="play-description">
-                        <p className="play-text">{playText}</p>
-                      </div>
+                      <div>Description: {playText}</div>
                       
                       {explanation && (
-                        <div className="play-explanation">
+                        <>
                           {explanation.why_the_play_happened && (
-                            <div className="explanation-section situation">
-                              <div className="explanation-content">
-                                <h5>The Situation</h5>
-                                <p>{explanation.why_the_play_happened}</p>
-                              </div>
-                            </div>
+                            <div>Situation: {explanation.why_the_play_happened}</div>
                           )}
                           
                           {explanation.numbers_explained && Object.keys(explanation.numbers_explained).length > 0 && (
-                            <div className="explanation-section stats">
-                              <div className="explanation-content">
-                                <h5>The Result</h5>
-                                <div className="stats-grid">
-                                  {explanation.numbers_explained.yards !== undefined && (
-                                    <div className="stat-item">
-                                      <span className="stat-label">Yards Gained:</span>
-                                      <span className="stat-value">{explanation.numbers_explained.yards}</span>
-                                    </div>
-                                  )}
-                                  {explanation.numbers_explained.score && (
-                                    <div className="stat-item score-stat">
-                                      <span className="stat-label">Score:</span>
-                                      <span className="stat-value">
-                                        {explanation.numbers_explained.score.home} - {explanation.numbers_explained.score.away}
-                                        {explanation.numbers_explained.score.change !== undefined && explanation.numbers_explained.score.change !== 0 && (
-                                          <span className="score-change">
-                                            ({explanation.numbers_explained.score.change > 0 ? '+' : ''}{explanation.numbers_explained.score.change} pts)
-                                          </span>
-                                        )}
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
+                            <>
+                              {explanation.numbers_explained.yards !== undefined && (
+                                <div>Yards: {explanation.numbers_explained.yards}</div>
+                              )}
+                              {explanation.numbers_explained.score && (
+                                <div>Score: {explanation.numbers_explained.score.home} - {explanation.numbers_explained.score.away}</div>
+                              )}
+                            </>
                           )}
                           
                           {explanation.possible_alternatives && explanation.possible_alternatives.length > 0 && (
-                            <div className="explanation-section alternatives">
-                              <div className="explanation-content">
-                                <h5>Other Options the Team Had</h5>
-                                <ul className="alternatives-list">
-                                  {explanation.possible_alternatives.slice(0, 4).map((alt, i) => (
-                                    <li key={i}>{alt}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </div>
+                            <div>Alternatives: {explanation.possible_alternatives.join(', ')}</div>
                           )}
-                        </div>
+                        </>
                       )}
                     </div>
                   </div>

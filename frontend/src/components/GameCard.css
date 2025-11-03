@@ -1,64 +1,50 @@
 .game-card {
   background: #ffffff;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 16px;
-  margin: 12px 0;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  margin: 0.75rem 0;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .game-card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-  transform: translateY(-2px);
+  border-color: #999;
+  background: #f9f9f9;
 }
 
 .game-card.favorite {
-  border-color: #f59e0b;
-  background: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%);
-}
-
-.game-card.favorite:hover {
-  border-color: #d97706;
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+  border-color: #ff9900;
+  background: #fff8e6;
 }
 
 .game-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .game-status {
   display: flex;
-  gap: 8px;
-  font-size: 14px;
-  color: #6b7280;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
 }
 
 .quarter {
-  font-weight: 600;
-  color: #374151;
-}
-
-.time {
-  color: #6b7280;
+  font-weight: bold;
+  color: #333;
 }
 
 .favorite-indicator {
-  color: #f59e0b;
-  font-size: 18px;
-  font-weight: bold;
+  color: #ff9900;
+  font-size: 1.2rem;
 }
 
 .teams {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .team {
@@ -69,50 +55,32 @@
 }
 
 .team-name {
-  font-size: 16px;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 4px;
-  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.25rem;
 }
 
 .team-abbr {
-  font-size: 12px;
-  color: #6b7280;
-  font-weight: 500;
+  font-size: 0.85rem;
+  color: #666;
 }
 
 .vs {
-  font-size: 14px;
-  color: #6b7280;
-  margin: 0 16px;
+  font-size: 1rem;
+  color: #666;
+  margin: 0 1rem;
 }
 
 .game-details {
-  padding: 12px;
-  background: #f9fafb;
-  border-radius: 8px;
+  padding: 0.75rem;
+  background: #f5f5f5;
+  border-top: 1px solid #ddd;
   text-align: center;
 }
 
 .detail-text {
-  color: #6b7280;
-  font-size: 14px;
+  color: #666;
+  font-size: 0.9rem;
   font-style: italic;
-}
-
-@media (max-width: 640px) {
-  .game-card {
-    padding: 12px;
-    margin: 8px 0;
-  }
-  
-  .teams {
-    flex-direction: column;
-    gap: 8px;
-  }
-  
-  .vs {
-    margin: 0;
-  }
 }

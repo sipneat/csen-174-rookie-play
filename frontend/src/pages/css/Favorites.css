@@ -1,205 +1,146 @@
 .favorites-container {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  padding: 2rem;
-  box-sizing: border-box;
+  background: #fafafa;
+  padding: 1.5rem;
 }
 
 .favorites-header {
   text-align: center;
-  margin-bottom: 2rem;
-  padding: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 2rem;
+  border: 1px solid #ddd;
 }
 
 .favorites-header h1 {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #1f2937;
+  font-size: 1.8rem;
+  color: #333;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .favorites-header p {
-  font-size: 1rem;
-  color: #6b7280;
+  font-size: 0.95rem;
+  color: #666;
   margin: 0;
 }
 
 .message {
-  max-width: 1200px;
-  margin: 0 auto 2rem;
   padding: 1rem;
-  border-radius: 8px;
+  margin-bottom: 1.5rem;
   text-align: center;
-  font-weight: 500;
+  font-weight: bold;
+  border: 1px solid;
 }
 
 .message.success {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #10b981;
+  background: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
 }
 
 .message.error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
+  background: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
 }
 
 .teams-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
-  max-width: 1200px;
-  margin: 0 auto 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .team-card {
   background: white;
-  border: 2px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 1.5rem;
+  border: 1px solid #ddd;
+  padding: 1rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  position: relative;
   text-align: center;
+  position: relative;
 }
 
 .team-card:hover {
-  border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
-  transform: translateY(-2px);
+  border-color: #999;
+  background: #f9f9f9;
 }
 
 .team-card.selected {
-  border-color: #f59e0b;
-  background: linear-gradient(135deg, #fef3c7 0%, #ffffff 100%);
-  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
-}
-
-.team-card.selected:hover {
-  border-color: #d97706;
+  border-color: #ff9900;
+  background: #fff8e6;
 }
 
 .team-abbr {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   font-weight: bold;
-  color: #1f2937;
+  color: #333;
   margin-bottom: 0.5rem;
 }
 
 .team-name {
-  font-size: 0.9rem;
-  color: #6b7280;
-  font-weight: 500;
+  font-size: 0.85rem;
+  color: #666;
 }
 
 .selected-indicator {
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
-  color: #f59e0b;
-  font-size: 1.5rem;
+  color: #ff9900;
+  font-size: 1.3rem;
 }
 
 .favorites-actions {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  max-width: 1200px;
-  margin: 0 auto 1rem;
+  margin-bottom: 1rem;
 }
 
 .save-button,
 .cancel-button {
-  padding: 0.75rem 2rem;
-  border-radius: 8px;
-  font-weight: 500;
-  font-size: 1rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.95rem;
   cursor: pointer;
-  transition: all 0.2s ease;
-  border: none;
+  border: 1px solid;
 }
 
 .save-button {
-  background: #3b82f6;
+  background: #0066cc;
   color: white;
+  border-color: #0066cc;
 }
 
 .save-button:hover:not(:disabled) {
-  background: #2563eb;
+  background: #0052a3;
 }
 
 .save-button:disabled {
-  background: #9ca3af;
+  background: #999;
+  border-color: #999;
   cursor: not-allowed;
 }
 
 .cancel-button {
-  background: #e5e7eb;
-  color: #374151;
+  background: #e0e0e0;
+  color: #333;
+  border-color: #ccc;
 }
 
 .cancel-button:hover:not(:disabled) {
-  background: #d1d5db;
-}
-
-.cancel-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  background: #d0d0d0;
 }
 
 .favorites-info {
   text-align: center;
-  color: #6b7280;
-  font-size: 0.95rem;
-  max-width: 1200px;
-  margin: 0 auto;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .loading-message {
   text-align: center;
-  padding: 4rem;
-  color: #6b7280;
-  font-size: 1.2rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .favorites-container {
-    padding: 1rem;
-  }
-
-  .favorites-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .teams-grid {
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 0.75rem;
-  }
-
-  .team-card {
-    padding: 1rem;
-  }
-
-  .favorites-actions {
-    flex-direction: column;
-  }
-
-  .save-button,
-  .cancel-button {
-    width: 100%;
-  }
+  padding: 3rem;
+  color: #666;
+  font-size: 1.1rem;
 }

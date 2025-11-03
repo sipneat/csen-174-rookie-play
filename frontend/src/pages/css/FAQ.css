@@ -1,144 +1,62 @@
 .faq-container {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  padding: 2rem;
+  background: #fafafa;
+  padding: 1rem;
 }
 
 .faq-content {
-  max-width: 900px;
+  max-width: 800px;
   margin: 0 auto;
   background: white;
-  padding: 3rem;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  border: 1px solid #000;
 }
 
-.faq-header {
-  text-align: center;
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
-  border-bottom: 2px solid #e5e7eb;
+.faq-content h1 {
+  font-size: 1.8rem;
+  color: #000;
+  margin-bottom: 0.5rem;
 }
 
-.faq-header h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #1f2937;
-  margin-bottom: 0.75rem;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.faq-content > p {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 2rem;
 }
 
-.faq-header p {
-  font-size: 1.1rem;
-  color: #6b7280;
-  margin: 0;
-}
-
-.faq-section {
-  margin-bottom: 2.5rem;
-}
-
-.faq-section h2 {
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.faq-section h3 {
+.faq-content h2 {
   font-size: 1.3rem;
-  font-weight: 600;
-  color: #1f2937;
-  margin-top: 1.5rem;
-  margin-bottom: 0.75rem;
+  color: #000;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #000;
+  padding-bottom: 0.25rem;
 }
 
-.faq-section p {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #4b5563;
+.faq-content h3 {
+  font-size: 1.1rem;
+  color: #000;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.faq-content p {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #333;
   margin-bottom: 1rem;
 }
 
-.faq-section ol,
-.faq-section ul {
-  margin: 1rem 0;
+.faq-content ol,
+.faq-content ul {
+  margin: 0.75rem 0;
   padding-left: 1.5rem;
 }
 
-.faq-section li {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #4b5563;
-  margin-bottom: 0.75rem;
-}
-
-.faq-section strong {
-  color: #1f2937;
-  font-weight: 600;
-}
-
-.instruction-box {
-  background: #f9fafb;
-  border-left: 4px solid #3b82f6;
-  padding: 1.5rem;
-  border-radius: 8px;
-  margin: 1.5rem 0;
-}
-
-.instruction-box p {
-  margin: 0;
-  color: #374151;
-}
-
-.feature-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1.5rem;
-  margin: 1.5rem 0;
-}
-
-.feature-card {
-  background: #f9fafb;
-  padding: 1.5rem;
-  border-radius: 12px;
-  border: 1px solid #e5e7eb;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.feature-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.feature-card h3 {
-  margin-top: 0;
-  color: #3b82f6;
-}
-
-.team-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin: 1rem 0;
-}
-
-.team-member {
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
-}
-
-.emoji-icon {
-  font-size: 1.5rem;
-  margin-right: 0.5rem;
+.faq-content li {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 0.5rem;
 }

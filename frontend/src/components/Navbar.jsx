@@ -26,7 +26,7 @@ export default function Navbar() {
   return (
     <header className="rp-navbar">
       <div className="rp-navbar-left">
-        <Link to="/" className="rp-brand">RookiePlay</Link>
+        <Link to="/" className="rp-brand">Rookie Play</Link>
         <nav className="rp-navlinks">
           <NavLink to="/" end className={({isActive}) => isActive ? 'active' : ''}>Home</NavLink>
           {user && (

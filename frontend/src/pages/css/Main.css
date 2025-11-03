@@ -1,217 +1,121 @@
-/* Ensure body/html don't constrain layout */
 html, body, #root {
   margin: 0;
   padding: 0;
   width: 100%;
   min-height: 100vh;
-  box-sizing: border-box;
 }
 
-*, *::before, *::after {
-  box-sizing: inherit;
-}
-
-/* Main Container */
 .main-container {
   width: 100%;
-  margin: 0 auto;
-  padding: 2rem;
+  padding: 1rem;
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  box-sizing: border-box;
+  background: #fafafa;
 }
 
-/* Header Styles */
 .main-header {
   text-align: center;
-  margin-bottom: 3rem;
-  padding: 2rem 0;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
   background: white;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
+  border: 1px solid #ddd;
 }
 
 .main-header h1 {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #1f2937;
+  font-size: 2rem;
+  color: #333;
   margin-bottom: 0.5rem;
-  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 .main-header p {
-  font-size: 1.1rem;
-  color: #6b7280;
+  font-size: 1rem;
+  color: #666;
   margin: 0;
 }
 
-/* Games Section */
-.games-section {
-  margin-bottom: 3rem;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.games-section h2 {
-  font-size: 1.8rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
-.games-list {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* Favorite Teams Section */
 .favorite-teams {
   background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  margin-bottom: 1.5rem;
 }
 
 .favorite-teams h3 {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #374151;
-  margin-bottom: 1rem;
-  text-align: center;
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 0.75rem;
 }
 
 .favorite-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  justify-content: center;
 }
 
 .favorite-team-tag {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-weight: 500;
+  background: #e0e0e0;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #ccc;
   font-size: 0.9rem;
-  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
 }
 
 .no-favorites {
   text-align: center;
-  padding: 1.5rem;
-  color: #6b7280;
-}
-
-.no-favorites p {
-  margin-bottom: 1rem;
-  font-size: 1rem;
-}
-
-.manage-favorites-link {
-  text-align: center;
-  margin-top: 1rem;
+  padding: 1rem;
+  color: #666;
 }
 
 .manage-favorites-button {
-  background: #3b82f6;
+  background: #0066cc;
   color: white;
   border: none;
-  padding: 0.6rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  font-size: 0.95rem;
 }
 
 .manage-favorites-button:hover {
-  background: #2563eb;
+  background: #0052a3;
 }
 
-/* Loading and Error States */
+.games-section {
+  margin-bottom: 2rem;
+}
+
+.games-section h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.games-list {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
 .loading-message,
 .error-message {
   background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border: 1px solid #ddd;
   text-align: center;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .error-message {
-  background: #fee2e2;
-  border: 1px solid #fca5a5;
-  color: #991b1b;
-}
-
-.error-message p {
-  margin-bottom: 1rem;
-  font-weight: 500;
+  background: #ffe0e0;
+  border-color: #ff9999;
+  color: #cc0000;
 }
 
 .retry-button {
-  background: #3b82f6;
+  background: #0066cc;
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 500;
+  padding: 0.5rem 1rem;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.retry-button:hover {
-  background: #2563eb;
-}
-
-.loading-message {
-  color: #6b7280;
 }
 
 .no-games {
   text-align: center;
-  padding: 2rem;
-  color: #6b7280;
-  font-size: 1.1rem;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .main-container {
-    padding: 1rem;
-  }
-  
-  .main-header h1 {
-    font-size: 2rem;
-  }
-  
-  .games-list {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .main-header h1 {
-    font-size: 1.5rem;
-  }
+  padding: 1.5rem;
+  color: #666;
 }
