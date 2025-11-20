@@ -1,5 +1,7 @@
 # """Flask backend for Rookie Play. Extra test sentence"""
 
+import os
+from dotenv import load_dotenv
 from flask import Flask, jsonify, request, abort
 from flask_cors import CORS
 import requests
@@ -7,6 +9,8 @@ from game import GameService
 from play import PlayService
 from team import TeamService
 from player import PlayerService
+
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app)

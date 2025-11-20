@@ -1,0 +1,14 @@
+.ai-analysis {
+  border-left: 4px solid #10b981;
+  background: linear-gradient(135deg, #ecfdf5 0%, #f0fdf4 100%);
+}
+
+.ai-analysis h5 {
+  color: #065f46;
+}
+
+.ai-analysis p {
+  color: #064e3b;
+  font-weight: 500;
+  line-height: 1.8;
+}

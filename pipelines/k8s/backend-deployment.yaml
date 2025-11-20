@@ -18,3 +18,9 @@ spec:
         imagePullPolicy: Never
         ports:
         - containerPort: 3000
+        env:
+        - name: GROQ_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: groq-api-secret
+              key: groq-api-key

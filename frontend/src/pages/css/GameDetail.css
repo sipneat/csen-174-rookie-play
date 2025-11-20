@@ -523,3 +523,45 @@
     height: 40px;
   }
 }
+
+/* Loading Explanation State */
+.loading-explanation {
+  text-align: center;
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 8px;
+  margin-top: 1rem;
+}
+
+.loading-spinner-small {
+  width: 30px;
+  height: 30px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 0.75rem;
+}
+
+.loading-explanation p {
+  color: #6b7280;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Login Prompt for AI Analysis */
+.login-prompt {
+  text-align: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border-radius: 8px;
+  margin-top: 1rem;
+  border-left: 4px solid #f59e0b;
+}
+
+.login-prompt p {
+  color: #92400e;
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0;
+}

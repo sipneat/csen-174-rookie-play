@@ -1,6 +1,9 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { auth } from '../firebase'
+import { onAuthStateChanged } from 'firebase/auth'
 import { buildApiUrl, API_ENDPOINTS } from '../config/api'
+import PlayCard from '../components/PlayCard'
 import './css/GameDetail.css'
 
 export default function GameDetail() {
@@ -10,8 +13,7 @@ export default function GameDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [plays, setPlays] = useState([])
-  const [playsLoading, setPlaysLoading] = useState(false)
-  const previousPlaysRef = useRef(null)
+  const [user, setUser] = useState(null)
 
   const doFetchJson = async (url, options = {}) => {
     const res = await fetch(url, options)
@@ -23,8 +25,10 @@ export default function GameDetail() {
     return data
   }
 
-  const fetchGameDetails = useCallback(async () => {
-    setLoading(true)
+  const fetchGameDetails = useCallback(async (isInitialLoad = false) => {
+    if (isInitialLoad) {
+      setLoading(true)
+    }
     setError(null)
     try {
       const url = buildApiUrl(API_ENDPOINTS.GAME_BY_ID(gameId))
@@ -34,14 +38,13 @@ export default function GameDetail() {
     } catch (e) {
       setError(e.message || String(e))
     } finally {
-      setLoading(false)
+      if (isInitialLoad) {
+        setLoading(false)
+      }
     }
   }, [gameId])
 
-  const fetchPlays = useCallback(async (silent = false) => {
-    if (!silent) {
-      setPlaysLoading(true)
-    }
+  const fetchPlays = useCallback(async () => {
     try {
       const playsUrl = buildApiUrl(API_ENDPOINTS.GAME_PLAYS(gameId))
       const playsData = await doFetchJson(playsUrl)
@@ -49,57 +52,33 @@ export default function GameDetail() {
       
       const recentPlays = allPlays.slice(-5).reverse()
       
-      const playsWithExplanations = await Promise.all(
-        recentPlays.map(async (play) => {
-          try {
-            const playId = play.id || play.sequenceNumber
-            if (!playId) return { ...play, explanation: null }
-            
-            const explainUrl = buildApiUrl(API_ENDPOINTS.EXPLAIN_PLAY(gameId)) + `?play_id=${playId}`
-            const explainData = await doFetchJson(explainUrl)
-            return {
-              ...play,
-              explanation: explainData.explanation
-            }
-          } catch (err) {
-            console.error('Error fetching explanation for play:', err)
-            return { ...play, explanation: null }
-          }
-        })
-      )
-      
-      const newPlayIds = playsWithExplanations.map(p => p.id || p.sequenceNumber).join(',')
-      const oldPlayIds = previousPlaysRef.current?.map(p => p.id || p.sequenceNumber).join(',')
-      
-      if (newPlayIds !== oldPlayIds) {
-        previousPlaysRef.current = playsWithExplanations
-        setPlays(playsWithExplanations)
-      }
+      setPlays(recentPlays)
     } catch (err) {
       console.error('Error fetching plays:', err)
-      if (!silent) {
-        setPlays([])
-      }
-    } finally {
-      if (!silent) {
-        setPlaysLoading(false)
-      }
+      setPlays([])
     }
   }, [gameId])
 
   useEffect(() => {
-    fetchGameDetails()
-    const interval = setInterval(fetchGameDetails, 30000)
+    const unsub = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+    })
+    return () => unsub()
+  }, [])
+
+  useEffect(() => {
+    fetchGameDetails(true)
+    const interval = setInterval(() => fetchGameDetails(false), 30000)
     return () => clearInterval(interval)
   }, [fetchGameDetails])
 
   useEffect(() => {
     if (game) {
-      fetchPlays(false)
+      fetchPlays()
       const status = game.gamepackageJSON?.header?.competitions?.[0]?.status
       const statusType = status?.type?.name
       if (statusType === 'STATUS_IN_PROGRESS') {
-        const playsInterval = setInterval(() => fetchPlays(true), 30000)
+        const playsInterval = setInterval(fetchPlays, 30000)
         return () => clearInterval(playsInterval)
       }
     }
@@ -220,12 +199,7 @@ export default function GameDetail() {
         <div className="live-play-section">
           <h3>Recent Plays Explained</h3>
           <p className="section-subtitle">Learn what happened and why the team made each decision</p>
-          {playsLoading ? (
-            <div className="loading-plays">
-              <div className="loading-spinner"></div>
-              <p>Loading recent plays...</p>
-            </div>
-          ) : plays.length === 0 ? (
+          {plays.length === 0 ? (
             <div className="empty-state">
               <div className="empty-state-icon">
                 {statusType === 'STATUS_SCHEDULED' 
@@ -244,83 +218,16 @@ export default function GameDetail() {
             </div>
           ) : (
             <div className="plays-list">
-              {plays.map((play, index) => {
-                const playText = play.text || play.shortText || play.alternativeText || 'Play description unavailable'
-                const explanation = play.explanation
-                const stableKey = play.id || play.sequenceNumber || `play-${index}`
-                
-                return (
-                  <div key={stableKey} className="play-item">
-                    <div className="play-header">
-                      <span className="play-number">Recent Play #{plays.length - index}</span>
-                      {play.clock?.displayValue && (
-                        <span className="play-clock">{play.clock.displayValue}</span>
-                      )}
-                    </div>
-                    
-                    <div className="play-main-content">
-                      <div className="play-description">
-                        <p className="play-text">{playText}</p>
-                      </div>
-                      
-                      {explanation && (
-                        <div className="play-explanation">
-                          {explanation.why_the_play_happened && (
-                            <div className="explanation-section situation">
-                              <div className="explanation-content">
-                                <h5>The Situation</h5>
-                                <p>{explanation.why_the_play_happened}</p>
-                              </div>
-                            </div>
-                          )}
-                          
-                          {explanation.numbers_explained && Object.keys(explanation.numbers_explained).length > 0 && (
-                            <div className="explanation-section stats">
-                              <div className="explanation-content">
-                                <h5>The Result</h5>
-                                <div className="stats-grid">
-                                  {explanation.numbers_explained.yards !== undefined && (
-                                    <div className="stat-item">
-                                      <span className="stat-label">Yards Gained:</span>
-                                      <span className="stat-value">{explanation.numbers_explained.yards}</span>
-                                    </div>
-                                  )}
-                                  {explanation.numbers_explained.score && (
-                                    <div className="stat-item score-stat">
-                                      <span className="stat-label">Score:</span>
-                                      <span className="stat-value">
-                                        {explanation.numbers_explained.score.home} - {explanation.numbers_explained.score.away}
-                                        {explanation.numbers_explained.score.change !== undefined && explanation.numbers_explained.score.change !== 0 && (
-                                          <span className="score-change">
-                                            ({explanation.numbers_explained.score.change > 0 ? '+' : ''}{explanation.numbers_explained.score.change} pts)
-                                          </span>
-                                        )}
-                                      </span>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                          )}
-                          
-                          {explanation.possible_alternatives && explanation.possible_alternatives.length > 0 && (
-                            <div className="explanation-section alternatives">
-                              <div className="explanation-content">
-                                <h5>Other Options the Team Had</h5>
-                                <ul className="alternatives-list">
-                                  {explanation.possible_alternatives.slice(0, 4).map((alt, i) => (
-                                    <li key={i}>{alt}</li>
-                                  ))}
-                                </ul>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )
-              })}
+              {plays.map((play, index) => (
+                <PlayCard
+                  key={play.id || play.sequenceNumber || `play-${index}`}
+                  play={play}
+                  gameId={gameId}
+                  index={index}
+                  totalPlays={plays.length}
+                  user={user}
+                />
+              ))}
             </div>
           )}
         </div>

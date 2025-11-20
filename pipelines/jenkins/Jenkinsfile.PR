@@ -6,6 +6,7 @@ pipeline {
     INGRESS_HOST = "${env.BRANCH_NAME}.rookie-play.jakeesperson.com"
     K8S_NAMESPACE = "rookie-play-${env.BRANCH_NAME}"
     API_BASE_URL = "https://${env.BRANCH_NAME}.rookie-play.jakeesperson.com"
+    GROQ_API_KEY = credentials('groq-api-key')
   }
 
   stages {
@@ -44,6 +45,13 @@ pipeline {
         script {
           sh """
             kubectl create namespace ${K8S_NAMESPACE} --dry-run=client -o yaml | kubectl apply -f -
+            
+            # Create secret for Groq API key
+            kubectl create secret generic groq-api-secret \
+              --from-literal=groq-api-key=${GROQ_API_KEY} \
+              -n ${K8S_NAMESPACE} \
+              --dry-run=client -o yaml | kubectl apply -f -
+            
             sed "s|\\\${INGRESS_HOST}|${INGRESS_HOST}|g" pipelines/k8s/ingress.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
 
             sed "s|\\\${BRANCH_NAME}|${BRANCH_NAME}|g" pipelines/k8s/frontend-deployment.yaml | kubectl apply -n ${K8S_NAMESPACE} -f -
