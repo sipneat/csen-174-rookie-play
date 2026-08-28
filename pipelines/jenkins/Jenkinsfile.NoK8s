@@ -1,0 +1,49 @@
+pipeline {
+  agent any
+
+  environment {
+    BRANCH_NAME = "latest"
+    DEPLOY_HOST = "rookie-play.jakeesperson.com"
+    API_BASE_URL = "http://${DEPLOY_HOST}:3000"
+    COMPOSE_PROJECT_NAME = "rookie-play"
+    GROQ_API_KEY = credentials('groq-api-key')
+  }
+
+  stages {
+    stage('Build Docker Images') {
+      steps {
+        sh '''
+          docker build -f pipelines/docker/Dockerfile.frontend \
+            --build-arg VITE_API_BASE_URL=${API_BASE_URL} \
+            --build-arg VITE_USE_MOCK_DATA=false \
+            -t rookie-play-frontend:${BRANCH_NAME} ./frontend
+
+          docker build -f pipelines/docker/Dockerfile.backend \
+            -t rookie-play-backend:${BRANCH_NAME} ./backend
+        '''
+      }
+    }
+
+    stage('Deploy with Docker Compose') {
+      steps {
+        sh '''
+          docker compose \
+            -f pipelines/docker/docker-compose.yml \
+            up -d --force-recreate --remove-orphans
+        '''
+      }
+    }
+  }
+
+  post {
+    success {
+      echo "Deployed site: http://${DEPLOY_HOST}:5173"
+      echo "Backend API: http://${DEPLOY_HOST}:3000/api"
+      script {
+        currentBuild.description = "<a href=\"http://${DEPLOY_HOST}:5173\" target=\"_blank\">Open Deployed Site</a>"
+        currentBuild.description += '<br>'
+        currentBuild.description += "<a href=\"http://${DEPLOY_HOST}:3000/api\" target=\"_blank\">Open Backend API</a>"
+      }
+    }
+  }
+}
