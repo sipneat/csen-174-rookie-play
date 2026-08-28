@@ -4,7 +4,7 @@ pipeline {
   environment {
     BRANCH_NAME = "latest"
     DEPLOY_HOST = "rookie-play.jakeesperson.com"
-    API_BASE_URL = "http://${DEPLOY_HOST}:3000"
+    API_BASE_URL = "http://${DEPLOY_HOST}:3001"
     COMPOSE_PROJECT_NAME = "rookie-play"
     GROQ_API_KEY = credentials('groq-api-key')
   }
