@@ -1,20 +1,29 @@
-import requests
+import json
+import subprocess
+from urllib.parse import urlencode
+
 
 def fetch_json(url: str, params: dict | None = None) -> dict:
     """
-    Fetch JSON from a URL with basic error handling.
+    Fetch JSON from a URL using curl.
     """
     params = params or {}
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36"
-    }
+    if params:
+        url = f"{url}?{urlencode(params)}"
 
-    try:
-        resp = requests.get(url, params=params, headers=headers, timeout=8)
-        resp.raise_for_status()
-        data = resp.json()
-    except Exception as e:
-        print("Error fetching %s: %s", url, e)
-        raise
+    result = subprocess.run(
+        [
+            "curl",
+            "--silent",
+            "--show-error",
+            "--location",
+            "--max-time",
+            "8",
+            url,
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
 
-    return data
+    return json.loads(result.stdout)
