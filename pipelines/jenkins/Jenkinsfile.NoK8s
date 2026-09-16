@@ -4,7 +4,7 @@ pipeline {
   environment {
     BRANCH_NAME = "latest"
     DEPLOY_HOST = "rookie-play.jakeesperson.com"
-    API_BASE_URL = "http://${DEPLOY_HOST}:3001"
+    API_BASE_URL = "https://${DEPLOY_HOST}"
     COMPOSE_PROJECT_NAME = "rookie-play"
     GROQ_API_KEY = credentials('groq-api-key')
   }
@@ -37,12 +37,12 @@ pipeline {
 
   post {
     success {
-      echo "Deployed site: http://${DEPLOY_HOST}:5173"
-      echo "Backend API: http://${DEPLOY_HOST}:3000/api"
+      echo "Deployed site: https://${DEPLOY_HOST}"
+      echo "Backend API: https://${DEPLOY_HOST}/api"
       script {
-        currentBuild.description = "<a href=\"http://${DEPLOY_HOST}:5173\" target=\"_blank\">Open Deployed Site</a>"
+        currentBuild.description = "<a href=\"https://${DEPLOY_HOST}\" target=\"_blank\">Open Deployed Site</a>"
         currentBuild.description += '<br>'
-        currentBuild.description += "<a href=\"http://${DEPLOY_HOST}:3000/api\" target=\"_blank\">Open Backend API</a>"
+        currentBuild.description += "<a href=\"https://${DEPLOY_HOST}/api\" target=\"_blank\">Open Backend API</a>"
       }
     }
   }
